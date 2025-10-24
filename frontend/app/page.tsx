@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import LoginForm from '@/components/LoginForm';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
-export default function Home() {
+function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [openaiKey, setOpenaiKey] = useState('');
@@ -78,5 +78,13 @@ export default function Home() {
       onSaveKey={handleSaveKey}
       onGoogleLogin={handleGoogleLogin}
     />
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <LoginPage />
+    </Suspense>
   );
 }
